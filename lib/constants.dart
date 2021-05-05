@@ -7,3 +7,5 @@ const kBackgroundColors = [
   Color(0xFF85d6ad),
   Color(0xFF7f679c),
 ];
+
+const kLocaleCode = 'kh_KH';

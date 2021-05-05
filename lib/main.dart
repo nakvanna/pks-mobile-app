@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pks_mobile/constants.dart';
 import 'package:pks_mobile/routes/app_pages.dart';
+import 'package:pks_mobile/translations/translator.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,6 +25,9 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.transparent,
         primaryColor: kPrimaryColor,
       ),
+      locale: Locale('kh', 'KH'),
+      // fallbackLocale: Locale('kh', 'KH'),
+      translations: Translator(),
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
     );

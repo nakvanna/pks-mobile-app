@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:pks_mobile/constants.dart';
-import 'package:pks_mobile/helper/social-icon.dart';
+import 'package:pks_mobile/helper/text-style/button_text.dart';
+import 'package:pks_mobile/helper/social_icon.dart';
+import 'package:pks_mobile/helper/text-style/number_text.dart';
+import 'package:pks_mobile/helper/text-style/simple_text.dart';
+import 'package:pks_mobile/helper/text-style/title_text.dart';
 import 'package:pks_mobile/size_config.dart';
 import 'package:pks_mobile/widgets/custom_background.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -56,10 +61,9 @@ class AuthScreen extends GetView {
                       SizedBox(
                         height: defaultSize,
                       ),
-                      Text(
-                        'ចុះឈ្មោះដោយប្រើគណនីខាងក្រោម',
-                        style: TextStyle(
-                            fontFamily: 'Bokor', fontSize: defaultSize * 2.4),
+                      TitleText(label: 'login-with-these-accounts-below'),
+                      SizedBox(
+                        height: defaultSize,
                       ),
                       Form(
                         key: formKey,
@@ -78,6 +82,7 @@ class AuthScreen extends GetView {
                                   selectorConfig: SelectorConfig(
                                     selectorType: PhoneInputSelectorType.DIALOG,
                                   ),
+                                  hintText: 'phone-number'.tr,
                                   ignoreBlank: false,
                                   autoValidateMode:
                                       AutovalidateMode.onUserInteraction,
@@ -88,7 +93,7 @@ class AuthScreen extends GetView {
                                   formatInput: false,
                                   keyboardType: TextInputType.numberWithOptions(
                                       signed: true, decimal: true),
-                                  // inputBorder: OutlineInputBorder(),
+                                  inputBorder: OutlineInputBorder(),
                                   onSaved: (PhoneNumber number) {
                                     print('On Saved: $number');
                                   },
@@ -104,11 +109,8 @@ class AuthScreen extends GetView {
                                   onPressed: () {
                                     getPhoneNumber('+855969392312');
                                   },
-                                  child: Text(
-                                    'ចុះឈ្មោះតាមលេខទូរស័ព្ទ',
-                                    style: TextStyle(
-                                        fontFamily: 'Bokor',
-                                        fontSize: defaultSize * 1.6),
+                                  child: ButtonText(
+                                    label: 'login-with-phone-number',
                                   ),
                                 ),
                               ),
@@ -119,11 +121,7 @@ class AuthScreen extends GetView {
                       SizedBox(
                         height: defaultSize,
                       ),
-                      Text(
-                        'ឬតាមរយៈ',
-                        style: TextStyle(
-                            fontFamily: 'Bokor', fontSize: defaultSize * 1.6),
-                      ),
+                      SimpleText(label: 'or-via', fontWeight: FontWeight.w600),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -150,55 +148,34 @@ class AuthScreen extends GetView {
                       SizedBox(
                         height: defaultSize,
                       ),
-                      Text(
-                        'មានបញ្ហាមិនអាចចូលប្រើប្រាស់បាន សូមទាក់ទងមកលេខ',
-                        style: TextStyle(
-                          fontFamily: 'Bokor',
-                          fontSize: defaultSize * 1.6,
-                        ),
+                      SimpleText(
+                        label: 'any-problem-contact-us',
+                        fontWeight: FontWeight.w600,
                       ),
                       SizedBox(
                         height: defaultSize,
                       ),
-                      Text(
-                        '+855 964 962 424',
-                        style: TextStyle(
-                          fontFamily: 'Bokor',
-                          fontSize: defaultSize * 1.4,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(
-                        height: defaultSize,
-                      ),
-                      Text(
-                        '+855 85 598 999',
-                        style: TextStyle(
-                            fontFamily: 'Bokor',
-                            fontSize: defaultSize * 1.4,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        height: defaultSize,
-                      ),
-                      Text(
-                        '+855 81 598 999',
-                        style: TextStyle(
-                            fontFamily: 'Bokor',
-                            fontSize: defaultSize * 1.4,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        height: defaultSize,
-                      ),
-                      Text(
-                        '+855 68 598 999',
-                        style: TextStyle(
-                          fontFamily: 'Bokor',
-                          fontSize: defaultSize * 1.4,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          NumberText(
+                            label: '+855-964-962-424',
+                            fontWeight: FontWeight.bold,
+                          ),
+                          NumberText(
+                            label: '+855-85-598-999',
+                            fontWeight: FontWeight.bold,
+                          ),
+                          NumberText(
+                            label: '+855-81-598-999',
+                            fontWeight: FontWeight.bold,
+                          ),
+                          NumberText(
+                            label: '+855-68-598-999',
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ],
+                      )
                     ],
                   ),
                 ),
@@ -217,7 +194,10 @@ class AuthScreen extends GetView {
     print(number);
   }
 
-  Widget horizontalLine({required double width, required double height}) =>
+  Padding horizontalLine({
+    required double width,
+    required double height,
+  }) =>
       Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: Container(
