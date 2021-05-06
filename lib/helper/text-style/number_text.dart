@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pks_mobile/constants.dart';
+import 'package:pks_mobile/constants/app_colors.dart';
 import 'package:pks_mobile/size_config.dart';
 
 class NumberText extends StatelessWidget {

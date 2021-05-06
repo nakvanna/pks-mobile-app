@@ -1,22 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:pks_mobile/constants.dart';
+import 'package:pks_mobile/constants/app_colors.dart';
+import 'package:pks_mobile/constants/user_info.dart';
+import 'package:pks_mobile/controllers/login-controller.dart';
 import 'package:pks_mobile/helper/text-style/button_text.dart';
 import 'package:pks_mobile/helper/social_icon.dart';
 import 'package:pks_mobile/helper/text-style/number_text.dart';
 import 'package:pks_mobile/helper/text-style/simple_text.dart';
 import 'package:pks_mobile/helper/text-style/title_text.dart';
+import 'package:pks_mobile/routes/app_pages.dart';
 import 'package:pks_mobile/size_config.dart';
 import 'package:pks_mobile/widgets/custom_background.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
-class AuthScreen extends GetView {
+class AuthScreen extends GetView<LoginController> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  final TextEditingController controller = TextEditingController();
-  String? initialCountry = 'KH';
-  Rx<PhoneNumber> number = PhoneNumber(isoCode: 'KH').obs;
+  //International phone number
+  final TextEditingController phoneNumberController = TextEditingController();
+  final String? initialCountry = 'KH';
+  final Rx<PhoneNumber> number = PhoneNumber(isoCode: 'KH').obs;
+  //======End=======//
+  //Login button click
+  final RxBool googleLoading = false.obs;
+  final RxBool appleLoading = false.obs;
+  final RxBool phoneLoading = false.obs;
+
+  final RxBool isValidate = false.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +38,7 @@ class AuthScreen extends GetView {
     return customBackground(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
-      colors: kBackgroundColors,
+      colors: kBgAuthScreen,
       scaffold: Scaffold(
         body: SafeArea(
           child: Stack(
@@ -77,7 +89,7 @@ class AuthScreen extends GetView {
                                     print(number.phoneNumber);
                                   },
                                   onInputValidated: (bool value) {
-                                    print(value);
+                                    isValidate.value = value;
                                   },
                                   selectorConfig: SelectorConfig(
                                     selectorType: PhoneInputSelectorType.DIALOG,
@@ -89,11 +101,10 @@ class AuthScreen extends GetView {
                                   selectorTextStyle:
                                       TextStyle(color: Colors.black),
                                   initialValue: number.value,
-                                  textFieldController: controller,
+                                  textFieldController: phoneNumberController,
                                   formatInput: false,
                                   keyboardType: TextInputType.numberWithOptions(
                                       signed: true, decimal: true),
-                                  inputBorder: OutlineInputBorder(),
                                   onSaved: (PhoneNumber number) {
                                     print('On Saved: $number');
                                   },
@@ -106,8 +117,17 @@ class AuthScreen extends GetView {
                                 constraints:
                                     BoxConstraints(minWidth: double.infinity),
                                 child: RaisedButton(
-                                  onPressed: () {
-                                    getPhoneNumber('+855969392312');
+                                  onPressed: () async {
+                                    if (isValidate.value) {
+                                      await Get.toNamed(
+                                        Routes.VERIFY_PHONE_NUMBER,
+                                        arguments: await getPhoneNumber(
+                                            phoneNumberController.text),
+                                      );
+                                    } else {
+                                      Get.snackbar('Validate',
+                                          'Phone number not correct!');
+                                    }
                                   },
                                   child: ButtonText(
                                     label: 'login-with-phone-number',
@@ -125,20 +145,51 @@ class AuthScreen extends GetView {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          RaisedButton.icon(
-                            color: Colors.red,
-                            onPressed: () {},
-                            label: Text('Google'),
-                            icon: Icon(SocialIcon.google),
+                          Obx(
+                            () => googleLoading.value
+                                ? RaisedButton.icon(
+                                    onPressed: null,
+                                    color: Colors.red,
+                                    label: Text('Waiting...'),
+                                    icon: SizedBox(
+                                      width: defaultSize * 2,
+                                      height: defaultSize * 2,
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  )
+                                : RaisedButton.icon(
+                                    onPressed: () async {
+                                      googleLoading.value = true;
+                                      await controller.googleSignIn();
+                                      googleLoading.value = false;
+                                    },
+                                    color: Colors.red,
+                                    label: Text('Google'),
+                                    icon: Icon(SocialIcon.google),
+                                  ),
                           ),
                           SizedBox(
                             width: defaultSize,
                           ),
-                          RaisedButton.icon(
-                            onPressed: () {},
-                            label: Text('Apple'),
-                            icon: Icon(SocialIcon.apple),
-                          ),
+                          Obx(() => appleLoading.value
+                              ? RaisedButton.icon(
+                                  onPressed: () {
+                                    appleLoading.value = false;
+                                  },
+                                  label: Text('Waiting...'),
+                                  icon: SizedBox(
+                                    width: defaultSize * 2,
+                                    height: defaultSize * 2,
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                )
+                              : RaisedButton.icon(
+                                  onPressed: () {
+                                    appleLoading.value = true;
+                                  },
+                                  label: Text('Apple'),
+                                  icon: Icon(SocialIcon.apple),
+                                )),
                         ],
                       ),
                       SizedBox(
@@ -187,11 +238,11 @@ class AuthScreen extends GetView {
     );
   }
 
-  void getPhoneNumber(String phoneNumber) async {
+  getPhoneNumber(String phoneNumber) async {
     PhoneNumber number =
         await PhoneNumber.getRegionInfoFromPhoneNumber(phoneNumber, 'KH');
     this.number.value = number;
-    print(number);
+    return number;
   }
 
   Padding horizontalLine({
@@ -206,4 +257,38 @@ class AuthScreen extends GetView {
           color: Colors.red.withOpacity(.3),
         ),
       );
+}
+
+class SocialBtn extends StatelessWidget {
+  const SocialBtn({
+    Key? key,
+    required this.color,
+    required this.onPressed,
+    required this.label,
+    required this.icon,
+    required this.isLoading,
+  }) : super(key: key);
+
+  final Color color;
+  final Function onPressed;
+  final String label;
+  final IconData icon;
+  final bool isLoading;
+
+  @override
+  Widget build(BuildContext context) {
+    double defaultSize = SizeConfig.defaultSize!;
+    return RaisedButton.icon(
+      color: color,
+      onPressed: () => isLoading ? null : onPressed,
+      label: Text(label),
+      icon: isLoading
+          ? SizedBox(
+              width: defaultSize * 2,
+              height: defaultSize * 2,
+              child: CircularProgressIndicator(),
+            )
+          : Icon(icon),
+    );
+  }
 }

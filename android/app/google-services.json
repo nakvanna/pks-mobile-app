@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "105637236407",
+    "project_id": "pks-mobile-fca65",
+    "storage_bucket": "pks-mobile-fca65.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105637236407:android:21feed8c1bf15543710732",
+        "android_client_info": {
+          "package_name": "com.example.pks_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "105637236407-iq62eo7m1biikrrt18cj18rkhtbmu3pt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pks_mobile",
+            "certificate_hash": "348e84e7685003213e9c27b8b9f82aae5cb435ca"
+          }
+        },
+        {
+          "client_id": "105637236407-vr2ksirkordh5j682did7vaom5i38fil.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQLNnJGHUSjKcWMSd5pq4pXXCgM7HI9tI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "105637236407-vr2ksirkordh5j682did7vaom5i38fil.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,10 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pks_mobile/constants.dart';
+import 'package:pks_mobile/bindings/login_binding.dart';
+import 'package:pks_mobile/constants/app_colors.dart';
+import 'package:pks_mobile/constants/user_info.dart';
 import 'package:pks_mobile/routes/app_pages.dart';
 import 'package:pks_mobile/translations/translator.dart';
 
-void main() {
+void main() async {
+  ///Using to interact with the Flutter engine
+  WidgetsFlutterBinding.ensureInitialized();
+  //Initialize firebase core
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -17,7 +24,9 @@ class MyApp extends StatelessWidget {
         ///Delay for splash screen
         Future.delayed(
           Duration(seconds: 2),
-          () => Get.offNamed(Routes.AUTH),
+          () => googleUser.value == null
+              ? Get.offNamed(Routes.AUTH)
+              : Get.offNamed(Routes.HOME),
         );
       },
       title: 'PKS MOBILE',
@@ -26,6 +35,7 @@ class MyApp extends StatelessWidget {
         primaryColor: kPrimaryColor,
       ),
       locale: Locale('kh', 'KH'),
+      initialBinding: LoginBinding(),
       // fallbackLocale: Locale('kh', 'KH'),
       translations: Translator(),
       initialRoute: AppPages.INITIAL,

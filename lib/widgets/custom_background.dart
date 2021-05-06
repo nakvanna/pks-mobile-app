@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-Container customBackground(
-    {required Scaffold scaffold,
-    required List<Color> colors,
-    required Alignment begin,
-    required Alignment end}) {
+Container customBackground({
+  required List<Color> colors,
+  required Alignment begin,
+  required Alignment end,
+  required Scaffold scaffold,
+}) {
   return Container(
     decoration: BoxDecoration(
       gradient: LinearGradient(
