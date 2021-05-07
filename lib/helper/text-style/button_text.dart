@@ -16,6 +16,8 @@ class ButtonText extends StatelessWidget {
     if (kLocaleCode == 'kh_KH') {
       return Text(
         label.tr,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
         style: TextStyle(
           fontFamily: 'Battambang',
           fontWeight: FontWeight.w600,
@@ -25,6 +27,8 @@ class ButtonText extends StatelessWidget {
     } else {
       return Text(
         label.tr,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
         style: TextStyle(
           fontFamily: 'Roboto',
           fontWeight: FontWeight.w600,

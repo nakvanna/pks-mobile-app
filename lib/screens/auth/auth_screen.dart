@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:pks_mobile/constants/app_colors.dart';
-import 'package:pks_mobile/constants/user_info.dart';
 import 'package:pks_mobile/controllers/login-controller.dart';
-import 'package:pks_mobile/helper/text-style/button_text.dart';
 import 'package:pks_mobile/helper/social_icon.dart';
 import 'package:pks_mobile/helper/text-style/number_text.dart';
 import 'package:pks_mobile/helper/text-style/simple_text.dart';
@@ -14,6 +10,8 @@ import 'package:pks_mobile/routes/app_pages.dart';
 import 'package:pks_mobile/size_config.dart';
 import 'package:pks_mobile/widgets/custom_background.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:pks_mobile/widgets/custom_button.dart';
+import 'package:pks_mobile/widgets/separate_line.dart';
 
 class AuthScreen extends GetView<LoginController> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -32,7 +30,6 @@ class AuthScreen extends GetView<LoginController> {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
     double defaultSize = SizeConfig.defaultSize!;
     double fullWidth = SizeConfig.screenWidth!;
     return customBackground(
@@ -111,28 +108,23 @@ class AuthScreen extends GetView<LoginController> {
                                 ),
                               ),
                               SizedBox(
-                                height: defaultSize,
+                                height: defaultSize * 3,
                               ),
-                              ConstrainedBox(
-                                constraints:
-                                    BoxConstraints(minWidth: double.infinity),
-                                child: RaisedButton(
-                                  onPressed: () async {
-                                    if (isValidate.value) {
-                                      await Get.toNamed(
-                                        Routes.VERIFY_PHONE_NUMBER,
-                                        arguments: await getPhoneNumber(
-                                            phoneNumberController.text),
-                                      );
-                                    } else {
-                                      Get.snackbar('Validate',
-                                          'Phone number not correct!');
-                                    }
-                                  },
-                                  child: ButtonText(
-                                    label: 'login-with-phone-number',
-                                  ),
-                                ),
+                              CustomButton(
+                                onPressed: () async {
+                                  if (isValidate.value) {
+                                    await Get.toNamed(
+                                      Routes.VERIFY_PHONE_NUMBER,
+                                      arguments: await getPhoneNumber(
+                                          phoneNumberController.text),
+                                    );
+                                  } else {
+                                    Get.snackbar('Validate',
+                                        'Phone number not correct!');
+                                  }
+                                },
+                                label: 'login-with-phone-number',
+                                color: Colors.lightGreen,
                               ),
                             ],
                           ),
@@ -193,9 +185,12 @@ class AuthScreen extends GetView<LoginController> {
                         ],
                       ),
                       SizedBox(
-                        height: defaultSize,
+                        height: defaultSize * 3,
                       ),
-                      horizontalLine(width: fullWidth, height: defaultSize / 5),
+                      separateLine(
+                          width: fullWidth,
+                          height: defaultSize / 5,
+                          color: Colors.red.withOpacity(.3)),
                       SizedBox(
                         height: defaultSize,
                       ),
@@ -238,25 +233,12 @@ class AuthScreen extends GetView<LoginController> {
     );
   }
 
-  getPhoneNumber(String phoneNumber) async {
+  Future<String> getPhoneNumber(String phoneNumber) async {
     PhoneNumber number =
         await PhoneNumber.getRegionInfoFromPhoneNumber(phoneNumber, 'KH');
     this.number.value = number;
-    return number;
+    return number.toString();
   }
-
-  Padding horizontalLine({
-    required double width,
-    required double height,
-  }) =>
-      Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        child: Container(
-          width: width,
-          height: height,
-          color: Colors.red.withOpacity(.3),
-        ),
-      );
 }
 
 class SocialBtn extends StatelessWidget {

@@ -11,11 +11,13 @@ class TitleText extends StatelessWidget {
 
   final String label;
   @override
-  Text build(BuildContext context) {
+  Widget build(BuildContext context) {
     double defaultSize = SizeConfig.defaultSize!;
     if (kLocaleCode == 'kh_KH') {
       return Text(
         label.tr,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
         style: TextStyle(
           fontFamily: 'Bokor',
           fontWeight: FontWeight.bold,
@@ -25,6 +27,8 @@ class TitleText extends StatelessWidget {
     } else {
       return Text(
         label.tr,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
         style: TextStyle(
           fontFamily: 'Roboto',
           fontWeight: FontWeight.bold,

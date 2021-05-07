@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:pks_mobile/constants/app_colors.dart';
 import 'package:pks_mobile/size_config.dart';
 
-class NumberText extends StatelessWidget {
-  const NumberText({
+class LinkText extends StatelessWidget {
+  const LinkText({
     Key? key,
     required this.label,
     required this.fontWeight,
@@ -21,9 +21,10 @@ class NumberText extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
         style: TextStyle(
-          fontFamily: 'Roboto',
+          color: Colors.blue,
+          fontFamily: 'Battambang',
           fontWeight: fontWeight,
-          fontSize: defaultSize * 2.2,
+          fontSize: defaultSize * 1.6,
         ),
       );
     } else {
@@ -32,9 +33,10 @@ class NumberText extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
         style: TextStyle(
+          color: Colors.blue,
           fontFamily: 'Roboto',
           fontWeight: fontWeight,
-          fontSize: defaultSize * 2.4,
+          fontSize: defaultSize * 1.8,
         ),
       );
     }
