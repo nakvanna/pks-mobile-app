@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
-const kPrimaryColor = Color(0xFFA95EFA);
-const kSecondaryColor = Color(0xFFF3F6F8);
-const kTextColor = Color(0xFF171717);
-const kBgAuthScreen = [
-  Color(0xFF85d6ad),
-  Color(0xFF7f679c),
-];
+const kPrimaryColor = Color(0xff3123a8);
+const kSecondaryColor = Color(0xffcad7ed);
+const kLinkColor = Color(0xff24a0ed);
 
-const kBgHomeScreen = [
-  Color(0xFF783c07),
-  Color(0xFF7130f2),
+const kGoogleColor = Color(0xffb51d1d);
+const kAppleColor = Color(0xffbdb7b7);
+
+const kActiveColor = Color(0xff5fdba7);
+const kInactiveColor = Color(0xff9c2424);
+
+const kBgColors = [
+  Color(0xffcbc1d9),
+  Color(0xFF1e2d8a),
 ];
 
 const kLocaleCode = 'kh_KH';

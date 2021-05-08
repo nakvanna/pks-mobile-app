@@ -8,10 +8,12 @@ class SimpleText extends StatelessWidget {
     Key? key,
     required this.label,
     required this.fontWeight,
+    required this.color,
   }) : super(key: key);
 
   final String label;
   final FontWeight fontWeight;
+  final Color color;
   @override
   Text build(BuildContext context) {
     double defaultSize = SizeConfig.defaultSize!;
@@ -24,6 +26,7 @@ class SimpleText extends StatelessWidget {
           fontFamily: 'Battambang',
           fontWeight: fontWeight,
           fontSize: defaultSize * 1.6,
+          color: color,
         ),
       );
     } else {
@@ -35,6 +38,7 @@ class SimpleText extends StatelessWidget {
           fontFamily: 'Roboto',
           fontWeight: fontWeight,
           fontSize: defaultSize * 1.8,
+          color: color,
         ),
       );
     }

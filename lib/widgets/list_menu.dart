@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pks_mobile/constants/app_colors.dart';
 import 'package:pks_mobile/helper/text-style/simple_text.dart';
 
 class ListMenu extends StatelessWidget {
@@ -24,10 +25,12 @@ class ListMenu extends StatelessWidget {
       title: SimpleText(
         label: titleLabel,
         fontWeight: FontWeight.w700,
+        color: kPrimaryColor,
       ),
       subtitle: SimpleText(
         label: subtitleLabel,
         fontWeight: FontWeight.w500,
+        color: kPrimaryColor,
       ),
     );
   }

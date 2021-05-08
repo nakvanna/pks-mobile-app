@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pks_mobile/constants/app_colors.dart';
@@ -8,6 +10,7 @@ import 'package:pks_mobile/helper/text-style/simple_text.dart';
 import 'package:pks_mobile/helper/text-style/title_text.dart';
 import 'package:pks_mobile/routes/app_pages.dart';
 import 'package:pks_mobile/size_config.dart';
+import 'package:pks_mobile/widgets/background_app.dart';
 import 'package:pks_mobile/widgets/custom_background.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:pks_mobile/widgets/custom_button.dart';
@@ -31,201 +34,231 @@ class AuthScreen extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     double defaultSize = SizeConfig.defaultSize!;
-    double fullWidth = SizeConfig.screenWidth!;
-    return customBackground(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      colors: kBgAuthScreen,
-      scaffold: Scaffold(
-        body: SafeArea(
-          child: Stack(
-            fit: StackFit.expand,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      constraints: BoxConstraints(maxHeight: double.infinity),
-                    ),
-                  ),
-                  Image.asset(
-                    'assets/images/png/building.png',
-                    fit: BoxFit.fill,
-                  ),
-                ],
+    double screenWidth = SizeConfig.screenWidth!;
+    return AppBackground(
+      widget: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(defaultSize),
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: defaultSize * 3),
+                child: Image.asset(
+                  'assets/images/png/pks-logo.png',
+                  height: defaultSize * 15.5,
+                ),
               ),
-              SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.all(defaultSize),
+              SizedBox(
+                height: defaultSize,
+              ),
+              TitleText(
+                label: 'login-with-these-accounts-below',
+                color: kSecondaryColor,
+              ),
+              SizedBox(
+                height: defaultSize,
+              ),
+              Form(
+                key: formKey,
+                child: Container(
                   child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: defaultSize),
-                        child: Image.asset(
-                          'assets/images/png/pks-logo.png',
-                          height: defaultSize * 15.5,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Obx(
+                        () => InternationalPhoneNumberInput(
+                          onInputChanged: (PhoneNumber number) {
+                            print(number.phoneNumber);
+                          },
+                          onInputValidated: (bool value) {
+                            isValidate.value = value;
+                          },
+                          selectorConfig: SelectorConfig(
+                            selectorType: PhoneInputSelectorType.DIALOG,
+                          ),
+                          // hintText: 'phone-number'.tr,
+                          inputDecoration: InputDecoration(
+                            hintText: 'phone-number'.tr,
+                            hintStyle: TextStyle(
+                              color: kSecondaryColor,
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: kSecondaryColor, width: 2.0),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: kPrimaryColor, width: 2.0),
+                            ),
+                          ),
+                          countries: ['KH', 'TH'],
+                          ignoreBlank: false,
+                          errorMessage: 'លេខទូរស័ព្ទមិនត្រឹមត្រូវ',
+                          autoValidateMode: AutovalidateMode.onUserInteraction,
+                          textStyle: TextStyle(
+                            color: kSecondaryColor,
+                            fontSize: defaultSize * 2,
+                          ),
+                          selectorTextStyle: TextStyle(
+                            color: kSecondaryColor,
+                            fontSize: defaultSize * 2,
+                          ),
+                          searchBoxDecoration: InputDecoration(
+                            hintText: 'search-your-country'.tr,
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: kPrimaryColor, width: 2.0),
+                            ),
+                          ),
+                          initialValue: number.value,
+                          textFieldController: phoneNumberController,
+                          formatInput: false,
+                          keyboardType: TextInputType.numberWithOptions(
+                              signed: true, decimal: true),
+                          onSaved: (PhoneNumber number) {
+                            print('On Saved: $number');
+                          },
                         ),
-                      ),
-                      SizedBox(
-                        height: defaultSize,
-                      ),
-                      TitleText(label: 'login-with-these-accounts-below'),
-                      SizedBox(
-                        height: defaultSize,
-                      ),
-                      Form(
-                        key: formKey,
-                        child: Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Obx(
-                                () => InternationalPhoneNumberInput(
-                                  onInputChanged: (PhoneNumber number) {
-                                    print(number.phoneNumber);
-                                  },
-                                  onInputValidated: (bool value) {
-                                    isValidate.value = value;
-                                  },
-                                  selectorConfig: SelectorConfig(
-                                    selectorType: PhoneInputSelectorType.DIALOG,
-                                  ),
-                                  hintText: 'phone-number'.tr,
-                                  ignoreBlank: false,
-                                  autoValidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  selectorTextStyle:
-                                      TextStyle(color: Colors.black),
-                                  initialValue: number.value,
-                                  textFieldController: phoneNumberController,
-                                  formatInput: false,
-                                  keyboardType: TextInputType.numberWithOptions(
-                                      signed: true, decimal: true),
-                                  onSaved: (PhoneNumber number) {
-                                    print('On Saved: $number');
-                                  },
-                                ),
-                              ),
-                              SizedBox(
-                                height: defaultSize * 3,
-                              ),
-                              CustomButton(
-                                onPressed: () async {
-                                  if (isValidate.value) {
-                                    await Get.toNamed(
-                                      Routes.VERIFY_PHONE_NUMBER,
-                                      arguments: await getPhoneNumber(
-                                          phoneNumberController.text),
-                                    );
-                                  } else {
-                                    Get.snackbar('Validate',
-                                        'Phone number not correct!');
-                                  }
-                                },
-                                label: 'login-with-phone-number',
-                                color: Colors.lightGreen,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: defaultSize,
-                      ),
-                      SimpleText(label: 'or-via', fontWeight: FontWeight.w600),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Obx(
-                            () => googleLoading.value
-                                ? RaisedButton.icon(
-                                    onPressed: null,
-                                    color: Colors.red,
-                                    label: Text('Waiting...'),
-                                    icon: SizedBox(
-                                      width: defaultSize * 2,
-                                      height: defaultSize * 2,
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                  )
-                                : RaisedButton.icon(
-                                    onPressed: () async {
-                                      googleLoading.value = true;
-                                      await controller.googleSignIn();
-                                      googleLoading.value = false;
-                                    },
-                                    color: Colors.red,
-                                    label: Text('Google'),
-                                    icon: Icon(SocialIcon.google),
-                                  ),
-                          ),
-                          SizedBox(
-                            width: defaultSize,
-                          ),
-                          Obx(() => appleLoading.value
-                              ? RaisedButton.icon(
-                                  onPressed: () {
-                                    appleLoading.value = false;
-                                  },
-                                  label: Text('Waiting...'),
-                                  icon: SizedBox(
-                                    width: defaultSize * 2,
-                                    height: defaultSize * 2,
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                )
-                              : RaisedButton.icon(
-                                  onPressed: () {
-                                    appleLoading.value = true;
-                                  },
-                                  label: Text('Apple'),
-                                  icon: Icon(SocialIcon.apple),
-                                )),
-                        ],
                       ),
                       SizedBox(
                         height: defaultSize * 3,
                       ),
-                      separateLine(
-                          width: fullWidth,
-                          height: defaultSize / 5,
-                          color: Colors.red.withOpacity(.3)),
-                      SizedBox(
-                        height: defaultSize,
+                      CustomButton(
+                        onPressed: () async {
+                          if (isValidate.value) {
+                            await Get.toNamed(
+                              Routes.VERIFY_PHONE_NUMBER,
+                              arguments: await getPhoneNumber(
+                                  phoneNumberController.text),
+                            );
+                          } else {
+                            Get.snackbar(
+                                'Validate', 'Phone number not correct!');
+                          }
+                        },
+                        label: 'login-with-phone-number',
+                        btnColor: kSecondaryColor,
+                        labelColor: kPrimaryColor,
+                        width: screenWidth,
+                        height: defaultSize * 5,
+                        icon: Icon(Icons.phone_iphone),
                       ),
-                      SimpleText(
-                        label: 'any-problem-contact-us',
-                        fontWeight: FontWeight.w600,
-                      ),
-                      SizedBox(
-                        height: defaultSize,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          NumberText(
-                            label: '+855-964-962-424',
-                            fontWeight: FontWeight.bold,
-                          ),
-                          NumberText(
-                            label: '+855-85-598-999',
-                            fontWeight: FontWeight.bold,
-                          ),
-                          NumberText(
-                            label: '+855-81-598-999',
-                            fontWeight: FontWeight.bold,
-                          ),
-                          NumberText(
-                            label: '+855-68-598-999',
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ],
-                      )
                     ],
                   ),
                 ),
               ),
+              SizedBox(
+                height: defaultSize,
+              ),
+              SimpleText(
+                label: 'or-via',
+                fontWeight: FontWeight.w600,
+                color: kSecondaryColor,
+              ),
+              SizedBox(
+                height: defaultSize,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Obx(
+                    () => CustomButton(
+                      onPressed: () async {
+                        if (!googleLoading.value) {
+                          googleLoading.value = true;
+                          await controller.googleSignIn();
+                          googleLoading.value = false;
+                        }
+                      },
+                      icon: googleLoading.value
+                          ? SizedBox(
+                              width: defaultSize * 2,
+                              height: defaultSize * 2,
+                              child: CircularProgressIndicator(),
+                            )
+                          : Icon(
+                              SocialIcon.google,
+                              color: kGoogleColor,
+                            ),
+                      label: googleLoading.value ? 'Waiting' : 'Google',
+                      btnColor: kSecondaryColor,
+                      labelColor: kGoogleColor,
+                      width: screenWidth * .3,
+                      height: defaultSize * 4,
+                    ),
+                  ),
+                  SizedBox(
+                    width: defaultSize,
+                  ),
+                  Obx(
+                    () => CustomButton(
+                      onPressed: () async {
+                        if (!appleLoading.value) {
+                          appleLoading.value = true;
+                        }
+                      },
+                      icon: appleLoading.value
+                          ? SizedBox(
+                              width: defaultSize * 2,
+                              height: defaultSize * 2,
+                              child: CircularProgressIndicator(),
+                            )
+                          : Icon(
+                              SocialIcon.apple,
+                              color: kAppleColor,
+                            ),
+                      label: appleLoading.value ? 'Waiting' : 'Apple',
+                      btnColor: kPrimaryColor,
+                      labelColor: kAppleColor,
+                      width: screenWidth * .3,
+                      height: defaultSize * 4,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: defaultSize * 3,
+              ),
+              separateLine(
+                width: screenWidth,
+                height: defaultSize / 5,
+                color: kPrimaryColor,
+              ),
+              SizedBox(
+                height: defaultSize,
+              ),
+              SimpleText(
+                label: 'any-problem-contact-us',
+                fontWeight: FontWeight.w600,
+                color: kSecondaryColor,
+              ),
+              SizedBox(
+                height: defaultSize * 2,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  PhoneNumberText(
+                    label: '+855-964-962-424',
+                    fontWeight: FontWeight.bold,
+                    color: kSecondaryColor,
+                  ),
+                  PhoneNumberText(
+                    label: '+855-85-598-999',
+                    fontWeight: FontWeight.bold,
+                    color: kSecondaryColor,
+                  ),
+                  PhoneNumberText(
+                    label: '+855-81-598-999',
+                    fontWeight: FontWeight.bold,
+                    color: kSecondaryColor,
+                  ),
+                  PhoneNumberText(
+                    label: '+855-68-598-999',
+                    fontWeight: FontWeight.bold,
+                    color: kSecondaryColor,
+                  ),
+                ],
+              )
             ],
           ),
         ),

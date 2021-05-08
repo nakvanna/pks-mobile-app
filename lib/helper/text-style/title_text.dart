@@ -7,9 +7,11 @@ class TitleText extends StatelessWidget {
   const TitleText({
     Key? key,
     required this.label,
+    required this.color,
   }) : super(key: key);
 
   final String label;
+  final Color color;
   @override
   Widget build(BuildContext context) {
     double defaultSize = SizeConfig.defaultSize!;
@@ -22,6 +24,7 @@ class TitleText extends StatelessWidget {
           fontFamily: 'Bokor',
           fontWeight: FontWeight.bold,
           fontSize: defaultSize * 2.4,
+          color: color,
         ),
       );
     } else {
@@ -33,6 +36,7 @@ class TitleText extends StatelessWidget {
           fontFamily: 'Roboto',
           fontWeight: FontWeight.bold,
           fontSize: defaultSize * 2.6,
+          color: color,
         ),
       );
     }

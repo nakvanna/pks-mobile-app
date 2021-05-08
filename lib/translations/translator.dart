@@ -7,6 +7,7 @@ class Translator extends Translations {
           'login-with-these-accounts-below': 'Login with these accounts below',
           'login-with-phone-number': 'Login with phone number',
           'phone-number': 'Phone number',
+          'search-your-country': 'Search your country',
           'or-via': 'Or',
           'any-problem-contact-us': 'Any problem contact us',
           '+855-964-962-424': '+855 964 962 424',
@@ -34,6 +35,7 @@ class Translator extends Translations {
           'login-with-these-accounts-below': 'ចុះឈ្មោះដោយប្រើគណនីខាងក្រោម',
           'login-with-phone-number': 'ចុះឈ្មោះតាមលេខទូរស័ព្ទ',
           'phone-number': 'លេខទូរស័ព្ទ',
+          'search-your-country': 'ស្វែងរកប្រទេសរបស់អ្នក',
           'or-via': 'ឬតាមរយៈ',
           'any-problem-contact-us':
               'មានបញ្ហាមិនអាចចូលប្រើប្រាស់បាន សូមទាក់ទងមកលេខ',

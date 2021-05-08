@@ -7,9 +7,11 @@ class ButtonText extends StatelessWidget {
   const ButtonText({
     Key? key,
     required this.label,
+    required this.color,
   }) : super(key: key);
 
   final String label;
+  final Color color;
   @override
   Text build(BuildContext context) {
     double defaultSize = SizeConfig.defaultSize!;
@@ -22,6 +24,7 @@ class ButtonText extends StatelessWidget {
           fontFamily: 'Battambang',
           fontWeight: FontWeight.w600,
           fontSize: defaultSize * 1.6,
+          color: color,
         ),
       );
     } else {
@@ -33,6 +36,7 @@ class ButtonText extends StatelessWidget {
           fontFamily: 'Roboto',
           fontWeight: FontWeight.w600,
           fontSize: defaultSize * 1.8,
+          color: color,
         ),
       );
     }

@@ -21,7 +21,7 @@ class LinkText extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
         style: TextStyle(
-          color: Colors.blue,
+          color: kLinkColor,
           fontFamily: 'Battambang',
           fontWeight: fontWeight,
           fontSize: defaultSize * 1.6,
@@ -33,7 +33,7 @@ class LinkText extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
         style: TextStyle(
-          color: Colors.blue,
+          color: kLinkColor,
           fontFamily: 'Roboto',
           fontWeight: fontWeight,
           fontSize: defaultSize * 1.8,
