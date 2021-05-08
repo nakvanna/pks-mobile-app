@@ -7,12 +7,13 @@ class ListMenu extends StatelessWidget {
     Key? key,
     required this.image,
     required this.titleLabel,
-    required this.subtitleLabel,
+    this.subtitleLabel,
     required this.onTap,
     required this.icon,
   }) : super(key: key);
 
-  final String image, titleLabel, subtitleLabel;
+  final String? subtitleLabel;
+  final String image, titleLabel;
   final Function onTap;
   final IconData icon;
 
@@ -21,17 +22,22 @@ class ListMenu extends StatelessWidget {
     return ListTile(
       onTap: () => onTap(),
       leading: Image.asset(image),
-      trailing: Icon(icon),
+      trailing: Icon(
+        icon,
+        color: kPrimaryColor,
+      ),
       title: SimpleText(
         label: titleLabel,
         fontWeight: FontWeight.w700,
         color: kPrimaryColor,
       ),
-      subtitle: SimpleText(
-        label: subtitleLabel,
-        fontWeight: FontWeight.w500,
-        color: kPrimaryColor,
-      ),
+      subtitle: subtitleLabel == null
+          ? null
+          : SimpleText(
+              label: subtitleLabel!,
+              fontWeight: FontWeight.w500,
+              color: kPrimaryColor,
+            ),
     );
   }
 }

@@ -4,15 +4,17 @@ import 'package:pks_mobile/constants/app_colors.dart';
 
 class AppBackground extends GetView {
   AppBackground({
+    this.scaffoldKey,
     required this.widget,
     this.drawer,
     this.appBar,
     this.others,
   });
 
+  final GlobalKey<ScaffoldState>? scaffoldKey;
   final Widget? widget;
   final Widget? drawer;
-  final Widget? appBar;
+  final AppBar? appBar;
   final Widget? others;
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,9 @@ class AppBackground extends GetView {
         ),
       ),
       child: Scaffold(
+        key: scaffoldKey,
+        appBar: appBar,
+        drawer: drawer,
         body: SafeArea(
           child: Stack(
             fit: StackFit.expand,

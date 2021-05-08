@@ -14,5 +14,3 @@ const kBgColors = [
   Color(0xffcbc1d9),
   Color(0xFF1e2d8a),
 ];
-
-const kLocaleCode = 'kh_KH';

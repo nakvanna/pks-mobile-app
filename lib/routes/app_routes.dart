@@ -6,6 +6,8 @@ abstract class Routes {
   static const AUTH = _Paths.AUTH;
   static const HOME = _Paths.HOME;
   static const VERIFY_PHONE_NUMBER = _Paths.VERIFY_PHONE_NUMBER;
+  static const SETTINGS = _Paths.SETTINGS;
+  static const LANGUAGES = _Paths.LANGUAGES;
 }
 
 abstract class _Paths {
@@ -13,4 +15,6 @@ abstract class _Paths {
   static const AUTH = '/auth';
   static const HOME = '/home';
   static const VERIFY_PHONE_NUMBER = '/verify_phone_number';
+  static const SETTINGS = '/settings';
+  static const LANGUAGES = '/languages';
 }

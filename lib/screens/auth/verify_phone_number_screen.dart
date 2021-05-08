@@ -23,7 +23,7 @@ class VerifyPhoneNumber extends GetView<LoginController> {
 
     return GetBuilder<LoginController>(
       initState: (_) async {
-        // await controller.verifyPhoneNumber(phoneNumber: Get.arguments);
+        await controller.verifyPhoneNumber(phoneNumber: Get.arguments);
       },
       builder: (context) {
         TextEditingController _pinPutController = TextEditingController();
