@@ -30,6 +30,8 @@ class Translator extends Translations {
           "examination": "Examination",
           "monthly-and-semester-by-subjects.":
               "Monthly and semester by subjects.",
+          "languages": "Languages",
+          "change-to-your-language.": "Change to your language.",
         },
         'kh_KH': {
           'login-with-these-accounts-below': 'ចុះឈ្មោះដោយប្រើគណនីខាងក្រោម',
@@ -59,6 +61,8 @@ class Translator extends Translations {
           "examination": "ការប្រលង",
           "monthly-and-semester-by-subjects.":
               "ប្រចាំខែ និងប្រចាំឆមាសតាមមុខវិជ្ជា។",
+          "languages": "ភាសា",
+          "change-to-your-language.": "ប្ដូរទៅកាន់ភាសារបស់អ្នក។",
         },
       };
 }

@@ -8,6 +8,7 @@ import 'package:pks_mobile/controllers/translator_controller.dart';
 import 'package:pks_mobile/helper/split_locale_code.dart';
 import 'package:pks_mobile/helper/text-style/simple_text.dart';
 import 'package:pks_mobile/helper/text-style/title_text.dart';
+import 'package:pks_mobile/routes/app_pages.dart';
 import 'package:pks_mobile/widgets/app_background.dart';
 
 class Languages extends GetView<TranslationController> {
@@ -52,11 +53,14 @@ class Languages extends GetView<TranslationController> {
                 await Get.find<SharedPrefsController>().setLocaleCode(
                   langCode: _item['localeCode'],
                 );
-                String langCode = getLangCode(localeCode: _item['localeCode']);
-                String countryCode =
+                String _langCode = getLangCode(localeCode: _item['localeCode']);
+                String _countryCode =
                     getCountryCode(localeCode: _item['localeCode']);
                 controller.changeLanguage(
-                    langCode: langCode, countryCode: countryCode);
+                    langCode: _langCode, countryCode: _countryCode);
+                Get.arguments['fromAuth']
+                    ? Get.offAllNamed(Routes.AUTH)
+                    : Get.offAllNamed(Routes.HOME);
               },
             );
           });

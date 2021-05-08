@@ -13,11 +13,14 @@ class Settings extends GetView {
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> listMenuItems = [
       {
-        'titleLabel': 'language',
-        'subtitleLabel': 'change to your language.',
+        'titleLabel': 'languages',
+        'subtitleLabel': 'change-to-your-language.',
         // 'onTap': Routes.AUTH,
         'onTap': () {
-          Get.toNamed(Routes.LANGUAGES);
+          Get.toNamed(
+            Routes.LANGUAGES,
+            arguments: {"fromAuth": false},
+          ); //fromAuth false to specify the user has login already.
         },
         'icon': Icons.arrow_forward_ios,
         'image': 'assets/images/png/translate32.png',

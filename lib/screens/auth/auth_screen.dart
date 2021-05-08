@@ -35,6 +35,20 @@ class AuthScreen extends GetView<LoginController> {
     double defaultSize = SizeConfig.defaultSize!;
     double screenWidth = SizeConfig.screenWidth!;
     return AppBackground(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              Get.toNamed(
+                Routes.LANGUAGES,
+                arguments: {"fromAuth": true},
+              ); //fromAuth true to specify the user has no login yet.
+            },
+            icon: Icon(Icons.language),
+            color: kPrimaryColor,
+          )
+        ],
+      ),
       widget: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(defaultSize),
