@@ -1,23 +1,32 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pks_mobile/bindings/login_binding.dart';
 import 'package:pks_mobile/bindings/shared-prefs-binding.dart';
 import 'package:pks_mobile/constants/app_colors.dart';
 import 'package:pks_mobile/constants/global_variable.dart';
+import 'package:pks_mobile/controllers/db_controller.dart';
 import 'package:pks_mobile/controllers/shared-prefs-controller.dart';
 import 'package:pks_mobile/controllers/translator_controller.dart';
 import 'package:pks_mobile/helper/split_locale_code.dart';
 import 'package:pks_mobile/routes/app_pages.dart';
-import 'package:pks_mobile/size_config.dart';
 import 'package:pks_mobile/translations/translator.dart';
+
+bool USE_FIRESTORE_EMULATOR = false;
 
 void main() async {
   ///Using to interact with the Flutter engine
   WidgetsFlutterBinding.ensureInitialized();
   //Initialize firebase core
   await Firebase.initializeApp();
+  if (USE_FIRESTORE_EMULATOR) {
+    FirebaseFirestore.instance.settings = const Settings(
+      host: '10.0.2.2:8080',
+      sslEnabled: false,
+      persistenceEnabled: false,
+    );
+  }
   runApp(MyApp());
 }
 
@@ -32,6 +41,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       onInit: () async {
+        Get.put(DbController());
         await Get.find<SharedPrefsController>()
             .getLocaleCode(); //Get locale code from locale storage
         ///Delay for splash screen
@@ -42,6 +52,7 @@ class MyApp extends StatelessWidget {
           ///Change language on splash screen duration
           _translation.changeLanguage(
               langCode: _langCode, countryCode: _countryCode);
+
 
           ///Check login or not and go to route
           return _authUser.isNull

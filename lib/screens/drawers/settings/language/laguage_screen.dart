@@ -6,8 +6,8 @@ import 'package:pks_mobile/constants/global_variable.dart';
 import 'package:pks_mobile/controllers/shared-prefs-controller.dart';
 import 'package:pks_mobile/controllers/translator_controller.dart';
 import 'package:pks_mobile/helper/split_locale_code.dart';
-import 'package:pks_mobile/helper/text-style/simple_text.dart';
-import 'package:pks_mobile/helper/text-style/title_text.dart';
+import 'package:pks_mobile/helper/text-styles/simple_text.dart';
+import 'package:pks_mobile/helper/text-styles/title_text.dart';
 import 'package:pks_mobile/routes/app_pages.dart';
 import 'package:pks_mobile/widgets/app_background.dart';
 

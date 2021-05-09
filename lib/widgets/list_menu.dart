@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pks_mobile/constants/app_colors.dart';
-import 'package:pks_mobile/helper/text-style/simple_text.dart';
+import 'package:pks_mobile/helper/text-styles/simple_text.dart';
 
 class ListMenu extends StatelessWidget {
   const ListMenu({
@@ -13,7 +13,8 @@ class ListMenu extends StatelessWidget {
   }) : super(key: key);
 
   final String? subtitleLabel;
-  final String image, titleLabel;
+  final String titleLabel;
+  final Widget image;
   final Function onTap;
   final IconData icon;
 
@@ -21,7 +22,7 @@ class ListMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () => onTap(),
-      leading: Image.asset(image),
+      leading: image,
       trailing: Icon(
         icon,
         color: kPrimaryColor,

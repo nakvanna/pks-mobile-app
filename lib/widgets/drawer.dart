@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pks_mobile/constants/app_colors.dart';
 import 'package:pks_mobile/controllers/login-controller.dart';
-import 'package:pks_mobile/helper/text-style/simple_text.dart';
+import 'package:pks_mobile/helper/styles/simplyTextStyle.dart';
+import 'package:pks_mobile/helper/styles/titleBoxTextStyle.dart';
+import 'package:pks_mobile/helper/text-styles/simple_text.dart';
 import 'package:pks_mobile/routes/app_pages.dart';
 import 'package:pks_mobile/size_config.dart';
+import 'package:pks_mobile/widgets/custom_button.dart';
 
 class MyDrawer extends GetView {
   Drawer build(BuildContext context) {
+    double defaultSize = SizeConfig.defaultSize!;
+    double screenHeight = SizeConfig.screenHeight!;
     List<Map<String, dynamic>> listItems = [
       {
         'onTap': () {
@@ -34,15 +39,45 @@ class MyDrawer extends GetView {
       },
       {
         'onTap': () async {
-          await Get.find<LoginController>().googleSignOut();
-          Get.offAllNamed(Routes.AUTH);
+          Get.defaultDialog(
+            backgroundColor: kSecondaryColor,
+            title: 'logout'.tr,
+            titleStyle: titleBoxTextStyle(
+              defaultSize: defaultSize,
+              color: kInactiveColor,
+            ),
+            content: SimpleText(
+              label: 'do-you-want-to-logout?',
+              fontWeight: FontWeight.w600,
+              color: kPrimaryColor,
+            ),
+            confirm: CustomButton(
+              onPressed: () async {
+                await Get.find<LoginController>().googleSignOut();
+                Get.offAllNamed(Routes.AUTH);
+              },
+              label: 'yes',
+              btnColor: kActiveColor,
+              labelColor: kPrimaryColor,
+              width: defaultSize * 11,
+              height: defaultSize * 3,
+            ),
+            cancel: CustomButton(
+              onPressed: () {
+                Get.back();
+              },
+              label: 'no',
+              btnColor: kInactiveColor,
+              labelColor: kSecondaryColor,
+              width: defaultSize * 11,
+              height: defaultSize * 3,
+            ),
+          );
         },
         'image': 'assets/images/png/logout32.png',
         'label': 'logout',
       },
     ];
-    double screenHeight = SizeConfig.screenHeight!;
-    double defaultSize = SizeConfig.defaultSize!;
     return Drawer(
       child: SafeArea(
         child: Container(

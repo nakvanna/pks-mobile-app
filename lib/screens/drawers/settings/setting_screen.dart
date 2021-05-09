@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:pks_mobile/constants/app_colors.dart';
-import 'package:pks_mobile/helper/text-style/title_text.dart';
+import 'package:pks_mobile/helper/text-styles/title_text.dart';
 import 'package:pks_mobile/routes/app_pages.dart';
 import 'package:pks_mobile/size_config.dart';
 import 'package:pks_mobile/widgets/app_background.dart';
@@ -25,6 +25,16 @@ class Settings extends GetView {
         'icon': Icons.arrow_forward_ios,
         'image': 'assets/images/png/translate32.png',
       },
+      {
+        'titleLabel': 'personal-info',
+        'subtitleLabel': 'update-your-name-phone-number-and-other.',
+        // 'onTap': Routes.AUTH,
+        'onTap': () {
+          Get.toNamed(Routes.PERSONAL_INFO);
+        },
+        'icon': Icons.arrow_forward_ios,
+        'image': 'assets/images/png/profile32.png',
+      },
     ];
     double defaultSize = SizeConfig.defaultSize!;
     return AppBackground(
@@ -42,7 +52,7 @@ class Settings extends GetView {
             children: listMenuItems
                 .map(
                   (e) => ListMenu(
-                    image: e['image'],
+                    image: Image.asset(e['image']),
                     titleLabel: e['titleLabel'],
                     subtitleLabel: e['subtitleLabel'],
                     onTap: e['onTap'],

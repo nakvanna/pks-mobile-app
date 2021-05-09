@@ -24,10 +24,9 @@ class LoginController extends GetxController {
   }
 
   ///Google sign in
-  Future<void> googleSignIn() async {
+  Future<User?> googleSignIn() async {
     try {
       final GoogleSignInAccount? googleSignIn = await _googleSignIn.signIn();
-
       final GoogleSignInAuthentication googleAuth =
           await googleSignIn!.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
@@ -35,9 +34,8 @@ class LoginController extends GetxController {
         accessToken: googleAuth.accessToken,
       );
 
-      await _auth.signInWithCredential(credential).then(
-            (value) => Get.offAllNamed(Routes.HOME),
-          );
+      await _auth.signInWithCredential(credential);
+      return _auth.currentUser;
     } catch (error) {
       print(error);
       Get.snackbar('Google sign-in error', '$error');
@@ -59,7 +57,9 @@ class LoginController extends GetxController {
       await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: (PhoneAuthCredential credential) async {
-          await FirebaseAuth.instance.signInWithCredential(credential);
+          await _auth
+              .signInWithCredential(credential)
+              .then((value) => print(value));
         },
         verificationFailed: (FirebaseAuthException e) {
           print('Verify failed: $e');
@@ -76,7 +76,7 @@ class LoginController extends GetxController {
     }
   }
 
-  Future<void> onSubmitVerify({required String pin}) async {
+  Future<User?> onSubmitVerify({required String pin}) async {
     try {
       await _auth.signInWithCredential(
         PhoneAuthProvider.credential(
@@ -84,7 +84,7 @@ class LoginController extends GetxController {
           smsCode: pin,
         ),
       );
-      Get.offAllNamed(Routes.HOME);
+      return _auth.currentUser;
     } catch (e) {
       print('On submit verify: $e');
       Get.snackbar('Verification', 'Your code invalid!');

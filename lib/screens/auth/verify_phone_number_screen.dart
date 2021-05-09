@@ -1,12 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:pks_mobile/constants/app_colors.dart';
+import 'package:pks_mobile/controllers/db_controller.dart';
 import 'package:pks_mobile/controllers/login-controller.dart';
-import 'package:pks_mobile/helper/text-style/link_text.dart';
-import 'package:pks_mobile/helper/text-style/simple_text.dart';
-import 'package:pks_mobile/helper/text-style/title_text.dart';
+import 'package:pks_mobile/helper/auth_user_to_map.dart';
+import 'package:pks_mobile/helper/text-styles/link_text.dart';
+import 'package:pks_mobile/helper/text-styles/simple_text.dart';
+import 'package:pks_mobile/helper/text-styles/title_text.dart';
+import 'package:pks_mobile/routes/app_pages.dart';
 import 'package:pks_mobile/size_config.dart';
 import 'package:pks_mobile/widgets/custom_button.dart';
 import 'package:pks_mobile/widgets/separate_line.dart';
@@ -14,6 +18,8 @@ import 'package:pks_mobile/widgets/separate_line.dart';
 class VerifyPhoneNumber extends GetView<LoginController> {
   final String phoneNumber = '${Get.arguments}';
   final formKey = GlobalKey<FormState>();
+  final _db = Get.find<DbController>();
+  final RxBool _phoneLoading = false.obs;
 
   @override
   Widget build(BuildContext _context) {
@@ -118,8 +124,17 @@ class VerifyPhoneNumber extends GetView<LoginController> {
                                   blurRadius: 10,
                                 )
                               ],
-                              onCompleted: (String pin) async =>
-                                  await controller.onSubmitVerify(pin: pin),
+                              onCompleted: (String pin) async {
+                                User? _user;
+                                _phoneLoading.value = true;
+                                _user =
+                                    await controller.onSubmitVerify(pin: pin);
+                                await _db.createUser(
+                                  userMap: convertUserToMap(user: _user),
+                                );
+                                await Get.offAllNamed(Routes.HOME);
+                                _phoneLoading.value = false;
+                              },
                               onChanged: (String value) => print(value),
                             ),
                           ),
@@ -152,7 +167,40 @@ class VerifyPhoneNumber extends GetView<LoginController> {
                         SizedBox(
                           height: defaultSize,
                         ),
-                        CustomButton(
+                        Obx(
+                          () => CustomButton(
+                            onPressed: () async {
+                              User? _user;
+                              if (!_phoneLoading.value) {
+                                // _phoneLoading.value = true;
+                                // await controller.onSubmitVerify(
+                                //   pin: _pinPutController.text,
+                                // );
+                                // await _db.createUser(
+                                //   userMap: convertUserToMap(user: _user),
+                                // );
+                                // await Get.offAllNamed(Routes.HOME);
+                                // _phoneLoading.value = false;
+                              }
+                            },
+                            icon: _phoneLoading.value
+                                ? SizedBox(
+                                    width: defaultSize * 2,
+                                    height: defaultSize * 2,
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : Icon(
+                                    Icons.verified,
+                                    color: kSecondaryColor,
+                                  ),
+                            label: _phoneLoading.value ? 'Waiting' : 'VERIFY',
+                            width: screenWidth,
+                            height: defaultSize * 5,
+                            btnColor: kPrimaryColor,
+                            labelColor: kSecondaryColor,
+                          ),
+                        ),
+                        /*CustomButton(
                           label: "VERIFY",
                           icon: Icon(
                             Icons.verified,
@@ -162,11 +210,12 @@ class VerifyPhoneNumber extends GetView<LoginController> {
                           height: defaultSize * 5,
                           btnColor: kPrimaryColor,
                           labelColor: kSecondaryColor,
-                          onPressed: () async =>
-                              await controller.onSubmitVerify(
-                            pin: _pinPutController.text,
-                          ),
-                        )
+                          onPressed: () async {
+                            await controller.onSubmitVerify(
+                              pin: _pinPutController.text,
+                            );
+                          },
+                        )*/
                       ],
                     ),
                   ),

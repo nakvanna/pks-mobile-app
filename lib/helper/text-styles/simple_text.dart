@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pks_mobile/constants/app_colors.dart';
 import 'package:pks_mobile/constants/global_variable.dart';
+import 'package:pks_mobile/helper/styles/simplyTextStyle.dart';
 import 'package:pks_mobile/size_config.dart';
 
 class SimpleText extends StatelessWidget {
@@ -23,10 +24,9 @@ class SimpleText extends StatelessWidget {
         label.tr,
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
-        style: TextStyle(
-          fontFamily: 'Battambang',
+        style: simpleTextStyle(
+          defaultSize: defaultSize,
           fontWeight: fontWeight,
-          fontSize: defaultSize * 1.6,
           color: color,
         ),
       );
@@ -35,10 +35,9 @@ class SimpleText extends StatelessWidget {
         label.tr,
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
-        style: TextStyle(
-          fontFamily: 'Roboto',
+        style: simpleTextStyle(
+          defaultSize: defaultSize,
           fontWeight: fontWeight,
-          fontSize: defaultSize * 1.8,
           color: color,
         ),
       );

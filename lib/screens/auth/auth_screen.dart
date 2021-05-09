@@ -1,13 +1,16 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pks_mobile/constants/app_colors.dart';
+import 'package:pks_mobile/controllers/db_controller.dart';
 import 'package:pks_mobile/controllers/login-controller.dart';
+import 'package:pks_mobile/helper/auth_user_to_map.dart';
 import 'package:pks_mobile/helper/social_icon.dart';
-import 'package:pks_mobile/helper/text-style/number_text.dart';
-import 'package:pks_mobile/helper/text-style/simple_text.dart';
-import 'package:pks_mobile/helper/text-style/title_text.dart';
+import 'package:pks_mobile/helper/text-styles/number_text.dart';
+import 'package:pks_mobile/helper/text-styles/simple_text.dart';
+import 'package:pks_mobile/helper/text-styles/title_text.dart';
 import 'package:pks_mobile/routes/app_pages.dart';
 import 'package:pks_mobile/size_config.dart';
 import 'package:pks_mobile/widgets/app_background.dart';
@@ -16,19 +19,19 @@ import 'package:pks_mobile/widgets/custom_button.dart';
 import 'package:pks_mobile/widgets/separate_line.dart';
 
 class AuthScreen extends GetView<LoginController> {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   //International phone number
-  final TextEditingController phoneNumberController = TextEditingController();
-  final String? initialCountry = 'KH';
-  final Rx<PhoneNumber> number = PhoneNumber(isoCode: 'KH').obs;
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final String _initialCountry = 'KH';
+  final Rx<PhoneNumber> _number = PhoneNumber(isoCode: 'KH').obs;
   //======End=======//
   //Login button click
-  final RxBool googleLoading = false.obs;
-  final RxBool appleLoading = false.obs;
-  final RxBool phoneLoading = false.obs;
+  final RxBool _googleLoading = false.obs;
+  final RxBool _appleLoading = false.obs;
 
   final RxBool isValidate = false.obs;
+  final _db = Get.find<DbController>();
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +47,7 @@ class AuthScreen extends GetView<LoginController> {
                 arguments: {"fromAuth": true},
               ); //fromAuth true to specify the user has no login yet.
             },
-            icon: Icon(Icons.language),
+            icon: Image.asset('assets/images/png/translate32.png'),
             color: kPrimaryColor,
           )
         ],
@@ -55,7 +58,7 @@ class AuthScreen extends GetView<LoginController> {
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.only(top: defaultSize * 3),
+                padding: EdgeInsets.only(top: defaultSize),
                 child: Image.asset(
                   'assets/images/png/pks-logo.png',
                   height: defaultSize * 15.5,
@@ -72,7 +75,7 @@ class AuthScreen extends GetView<LoginController> {
                 height: defaultSize,
               ),
               Form(
-                key: formKey,
+                key: _formKey,
                 child: Container(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -122,8 +125,8 @@ class AuthScreen extends GetView<LoginController> {
                                   BorderSide(color: kPrimaryColor, width: 2.0),
                             ),
                           ),
-                          initialValue: number.value,
-                          textFieldController: phoneNumberController,
+                          initialValue: _number.value,
+                          textFieldController: _phoneNumberController,
                           formatInput: false,
                           keyboardType: TextInputType.numberWithOptions(
                               signed: true, decimal: true),
@@ -141,7 +144,7 @@ class AuthScreen extends GetView<LoginController> {
                             await Get.toNamed(
                               Routes.VERIFY_PHONE_NUMBER,
                               arguments: await getPhoneNumber(
-                                  phoneNumberController.text),
+                                  _phoneNumberController.text),
                             );
                           } else {
                             Get.snackbar(
@@ -176,13 +179,18 @@ class AuthScreen extends GetView<LoginController> {
                   Obx(
                     () => CustomButton(
                       onPressed: () async {
-                        if (!googleLoading.value) {
-                          googleLoading.value = true;
-                          await controller.googleSignIn();
-                          googleLoading.value = false;
+                        User? _user;
+                        if (!_googleLoading.value) {
+                          _googleLoading.value = true;
+                          _user = await controller.googleSignIn();
+                          await _db.createUser(
+                            userMap: convertUserToMap(user: _user),
+                          );
+                          await Get.offAllNamed(Routes.HOME);
+                          _googleLoading.value = false;
                         }
                       },
-                      icon: googleLoading.value
+                      icon: _googleLoading.value
                           ? SizedBox(
                               width: defaultSize * 2,
                               height: defaultSize * 2,
@@ -192,7 +200,7 @@ class AuthScreen extends GetView<LoginController> {
                               SocialIcon.google,
                               color: kGoogleColor,
                             ),
-                      label: googleLoading.value ? 'Waiting' : 'Google',
+                      label: _googleLoading.value ? 'Waiting' : 'Google',
                       btnColor: kSecondaryColor,
                       labelColor: kGoogleColor,
                       width: screenWidth * .3,
@@ -205,11 +213,11 @@ class AuthScreen extends GetView<LoginController> {
                   Obx(
                     () => CustomButton(
                       onPressed: () async {
-                        if (!appleLoading.value) {
-                          appleLoading.value = true;
+                        if (!_appleLoading.value) {
+                          _appleLoading.value = true;
                         }
                       },
-                      icon: appleLoading.value
+                      icon: _appleLoading.value
                           ? SizedBox(
                               width: defaultSize * 2,
                               height: defaultSize * 2,
@@ -219,7 +227,7 @@ class AuthScreen extends GetView<LoginController> {
                               SocialIcon.apple,
                               color: kAppleColor,
                             ),
-                      label: appleLoading.value ? 'Waiting' : 'Apple',
+                      label: _appleLoading.value ? 'Waiting' : 'Apple',
                       btnColor: kPrimaryColor,
                       labelColor: kAppleColor,
                       width: screenWidth * .3,
@@ -280,9 +288,9 @@ class AuthScreen extends GetView<LoginController> {
   }
 
   Future<String> getPhoneNumber(String phoneNumber) async {
-    PhoneNumber number =
-        await PhoneNumber.getRegionInfoFromPhoneNumber(phoneNumber, 'KH');
-    this.number.value = number;
+    PhoneNumber number = await PhoneNumber.getRegionInfoFromPhoneNumber(
+        phoneNumber, _initialCountry);
+    this._number.value = number;
     return number.toString();
   }
 }

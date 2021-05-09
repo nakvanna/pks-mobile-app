@@ -32,6 +32,12 @@ class Translator extends Translations {
               "Monthly and semester by subjects.",
           "languages": "Languages",
           "change-to-your-language.": "Change to your language.",
+          "personal-info": "Personal Information",
+          "update-your-name-phone-number-and-other.":
+              "Update your name phone number and other.",
+          'do-you-want-to-logout?': 'Do you want to logout?',
+          'no': 'No',
+          'yes': 'Yes',
         },
         'kh_KH': {
           'login-with-these-accounts-below': 'ចុះឈ្មោះដោយប្រើគណនីខាងក្រោម',
@@ -63,6 +69,12 @@ class Translator extends Translations {
               "ប្រចាំខែ និងប្រចាំឆមាសតាមមុខវិជ្ជា។",
           "languages": "ភាសា",
           "change-to-your-language.": "ប្ដូរទៅកាន់ភាសារបស់អ្នក។",
+          "personal-info": "ពត័មានផ្ទាល់ខ្លួន",
+          "update-your-name-phone-number-and-other.":
+              "កែប្រែឈ្មោះរបស់អ្នកលេងទូរសព្ទហើយនិងពត័មានផ្សេងៗទៀត។",
+          'do-you-want-to-logout?': 'តើអ្នកចង់ចាកចេញមែន?',
+          'no': 'ទេ',
+          'yes': 'បាទ/ចាស',
         },
       };
 }
