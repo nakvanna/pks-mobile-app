@@ -17,10 +17,8 @@ class Settings extends GetView {
         'subtitleLabel': 'change-to-your-language.',
         // 'onTap': Routes.AUTH,
         'onTap': () {
-          Get.toNamed(
-            Routes.LANGUAGES,
-            arguments: {"fromAuth": false},
-          ); //fromAuth false to specify the user has login already.
+          Get.toNamed(Routes
+              .LANGUAGES); //fromAuth false to specify the user has login already.
         },
         'icon': Icons.arrow_forward_ios,
         'image': 'assets/images/png/translate32.png',

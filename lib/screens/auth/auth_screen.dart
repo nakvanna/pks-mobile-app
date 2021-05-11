@@ -6,8 +6,9 @@ import 'package:get/get.dart';
 import 'package:pks_mobile/constants/app_colors.dart';
 import 'package:pks_mobile/controllers/db_controller.dart';
 import 'package:pks_mobile/controllers/login-controller.dart';
-import 'package:pks_mobile/helper/auth_user_to_map.dart';
-import 'package:pks_mobile/helper/social_icon.dart';
+import 'package:pks_mobile/controllers/shared-prefs-controller.dart';
+import 'package:pks_mobile/helper/convert-authuser-to_user/authuser_to_user.dart';
+import 'package:pks_mobile/helper/custom_icons/social_icon.dart';
 import 'package:pks_mobile/helper/text-styles/number_text.dart';
 import 'package:pks_mobile/helper/text-styles/simple_text.dart';
 import 'package:pks_mobile/helper/text-styles/title_text.dart';
@@ -42,10 +43,8 @@ class AuthScreen extends GetView<LoginController> {
         actions: [
           IconButton(
             onPressed: () {
-              Get.toNamed(
-                Routes.LANGUAGES,
-                arguments: {"fromAuth": true},
-              ); //fromAuth true to specify the user has no login yet.
+              Get.toNamed(Routes
+                  .LANGUAGES); //fromAuth true to specify the user has no login yet.
             },
             icon: Image.asset('assets/images/png/translate32.png'),
             color: kPrimaryColor,
@@ -57,12 +56,9 @@ class AuthScreen extends GetView<LoginController> {
           padding: EdgeInsets.all(defaultSize),
           child: Column(
             children: [
-              Padding(
-                padding: EdgeInsets.only(top: defaultSize),
-                child: Image.asset(
-                  'assets/images/png/pks-logo.png',
-                  height: defaultSize * 15.5,
-                ),
+              Image.asset(
+                'assets/images/png/pks-logo.png',
+                height: defaultSize * 15.5,
               ),
               SizedBox(
                 height: defaultSize,
@@ -181,13 +177,21 @@ class AuthScreen extends GetView<LoginController> {
                       onPressed: () async {
                         User? _user;
                         if (!_googleLoading.value) {
-                          _googleLoading.value = true;
-                          _user = await controller.googleSignIn();
+                          _googleLoading.value = true; //Assign loading true
+
+                          _user =
+                              await controller.googleSignIn(); //Google sign-in
+
                           await _db.createUser(
                             userMap: convertUserToMap(user: _user),
-                          );
-                          await Get.offAllNamed(Routes.HOME);
-                          _googleLoading.value = false;
+                          ); // Create user to firestore
+
+                          await Get.find<SharedPrefsController>().setUID(
+                              uid: _user!.uid); //Set uid to locale storage
+
+                          await Get.offAllNamed(
+                              Routes.HOME); // Go to home-screen
+                          _googleLoading.value = false; //Assign loading false
                         }
                       },
                       icon: _googleLoading.value
@@ -237,7 +241,7 @@ class AuthScreen extends GetView<LoginController> {
                 ],
               ),
               SizedBox(
-                height: defaultSize * 3,
+                height: defaultSize,
               ),
               separateLine(
                 width: screenWidth,
@@ -253,7 +257,7 @@ class AuthScreen extends GetView<LoginController> {
                 color: kSecondaryColor,
               ),
               SizedBox(
-                height: defaultSize * 2,
+                height: defaultSize,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pks_mobile/constants/app_colors.dart';
+import 'package:pks_mobile/constants/global_variable.dart';
 import 'package:pks_mobile/controllers/login-controller.dart';
-import 'package:pks_mobile/helper/styles/simplyTextStyle.dart';
+import 'package:pks_mobile/controllers/shared-prefs-controller.dart';
 import 'package:pks_mobile/helper/styles/titleBoxTextStyle.dart';
 import 'package:pks_mobile/helper/text-styles/simple_text.dart';
+import 'package:pks_mobile/helper/text-styles/title_box.dart';
 import 'package:pks_mobile/routes/app_pages.dart';
 import 'package:pks_mobile/size_config.dart';
 import 'package:pks_mobile/widgets/custom_button.dart';
@@ -53,8 +55,16 @@ class MyDrawer extends GetView {
             ),
             confirm: CustomButton(
               onPressed: () async {
-                await Get.find<LoginController>().googleSignOut();
-                Get.offAllNamed(Routes.AUTH);
+                await Get.find<LoginController>()
+                    .googleSignOut(); //Google sign out
+                await Get.find<SharedPrefsController>()
+                    .clearPrefs(); //Clear all locale storage
+                Get.offAllNamed(Routes.AUTH); //Go to auth screen
+
+                /* Clear Global Data */
+                kUID.value = '';
+                kDocID.value = '';
+                kUserData.value = null;
               },
               label: 'yes',
               btnColor: kActiveColor,
@@ -87,7 +97,7 @@ class MyDrawer extends GetView {
           child: Column(
             children: <Widget>[
               Container(
-                height: screenHeight / 6,
+                height: screenHeight / 5,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
@@ -100,14 +110,27 @@ class MyDrawer extends GetView {
                     ListTile(
                       leading: Image.asset(
                           "assets/images/png/profile-placeholder.png"),
-                      title: Text('NAK VANNA'),
-                      subtitle: Text('nakvanna@gmail.com'),
+                      title: TitleBox(
+                        color: kSecondaryColor,
+                        label: 'NAK VANNA',
+                      ),
+                      subtitle: SimpleText(
+                        label: 'nakvanna@gmail.com',
+                        color: kSecondaryColor,
+                      ),
                     ),
                     SizedBox(
                       height: defaultSize / 2,
                     ),
-                    Text('BIO'),
-                    Text('Hello im a student of a school in a village!')
+                    SimpleText(
+                      label: 'BIO',
+                      color: kSecondaryColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    SimpleText(
+                      label: 'Hello im a student of a school in a village!',
+                      color: kSecondaryColor,
+                    )
                   ],
                 ),
               ),

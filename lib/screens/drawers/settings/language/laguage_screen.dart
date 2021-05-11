@@ -5,7 +5,7 @@ import 'package:pks_mobile/constants/app_colors.dart';
 import 'package:pks_mobile/constants/global_variable.dart';
 import 'package:pks_mobile/controllers/shared-prefs-controller.dart';
 import 'package:pks_mobile/controllers/translator_controller.dart';
-import 'package:pks_mobile/helper/split_locale_code.dart';
+import 'package:pks_mobile/helper/split_and_join/split_locale_code.dart';
 import 'package:pks_mobile/helper/text-styles/simple_text.dart';
 import 'package:pks_mobile/helper/text-styles/title_text.dart';
 import 'package:pks_mobile/routes/app_pages.dart';
@@ -24,7 +24,7 @@ class Languages extends GetView<TranslationController> {
       {
         'localeCode': 'en_US',
         'isCheck': false,
-        'language': 'english',
+        'language': 'English',
         'image': 'assets/images/png/united-kingdom32.png',
       },
     ];
@@ -58,9 +58,6 @@ class Languages extends GetView<TranslationController> {
                     getCountryCode(localeCode: _item['localeCode']);
                 controller.changeLanguage(
                     langCode: _langCode, countryCode: _countryCode);
-                Get.arguments['fromAuth']
-                    ? Get.offAllNamed(Routes.AUTH)
-                    : Get.offAllNamed(Routes.HOME);
               },
             );
           });

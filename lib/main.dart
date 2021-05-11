@@ -9,18 +9,18 @@ import 'package:pks_mobile/constants/global_variable.dart';
 import 'package:pks_mobile/controllers/db_controller.dart';
 import 'package:pks_mobile/controllers/shared-prefs-controller.dart';
 import 'package:pks_mobile/controllers/translator_controller.dart';
-import 'package:pks_mobile/helper/split_locale_code.dart';
+import 'package:pks_mobile/helper/split_and_join/split_locale_code.dart';
 import 'package:pks_mobile/routes/app_pages.dart';
 import 'package:pks_mobile/translations/translator.dart';
 
-bool USE_FIRESTORE_EMULATOR = false;
+bool userFirestoreEmulator = false;
 
 void main() async {
   ///Using to interact with the Flutter engine
   WidgetsFlutterBinding.ensureInitialized();
   //Initialize firebase core
   await Firebase.initializeApp();
-  if (USE_FIRESTORE_EMULATOR) {
+  if (userFirestoreEmulator) {
     FirebaseFirestore.instance.settings = const Settings(
       host: '10.0.2.2:8080',
       sslEnabled: false,
@@ -42,20 +42,24 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       onInit: () async {
         Get.put(DbController());
-        await Get.find<SharedPrefsController>()
-            .getLocaleCode(); //Get locale code from locale storage
+
         ///Delay for splash screen
         Future.delayed(Duration(seconds: 3), () {
           String _langCode = getLangCode(localeCode: kLocaleCode.value);
           String _countryCode = getCountryCode(localeCode: kLocaleCode.value);
 
-          ///Change language on splash screen duration
-          _translation.changeLanguage(
-              langCode: _langCode, countryCode: _countryCode);
+          Get.find<SharedPrefsController>()
+              .getLocaleCode(); //Get locale code from locale storage
+          Get.find<SharedPrefsController>()
+              .getUID(); //Get uid from locale storage
 
+          _translation.changeLanguage(
+            langCode: _langCode,
+            countryCode: _countryCode,
+          ); //Change language on splash screen duration
 
           ///Check login or not and go to route
-          return _authUser.isNull
+          return _authUser == null
               ? Get.offNamed(Routes.AUTH)
               : Get.offNamed(Routes.HOME);
         });

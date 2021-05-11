@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pks_mobile/constants/app_colors.dart';
 import 'package:pks_mobile/constants/global_variable.dart';
 import 'package:pks_mobile/helper/styles/simplyTextStyle.dart';
 import 'package:pks_mobile/size_config.dart';
@@ -9,7 +8,7 @@ class SimpleText extends StatelessWidget {
   const SimpleText({
     Key? key,
     required this.label,
-    required this.fontWeight,
+    this.fontWeight: FontWeight.normal,
     required this.color,
   }) : super(key: key);
 

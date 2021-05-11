@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:get/get.dart';
 import 'package:pks_mobile/constants/global_variable.dart';
-import 'package:pks_mobile/routes/app_pages.dart';
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
   scopes: [

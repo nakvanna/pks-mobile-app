@@ -6,7 +6,8 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:pks_mobile/constants/app_colors.dart';
 import 'package:pks_mobile/controllers/db_controller.dart';
 import 'package:pks_mobile/controllers/login-controller.dart';
-import 'package:pks_mobile/helper/auth_user_to_map.dart';
+import 'package:pks_mobile/controllers/shared-prefs-controller.dart';
+import 'package:pks_mobile/helper/convert-authuser-to_user/authuser_to_user.dart';
 import 'package:pks_mobile/helper/text-styles/link_text.dart';
 import 'package:pks_mobile/helper/text-styles/simple_text.dart';
 import 'package:pks_mobile/helper/text-styles/title_text.dart';
@@ -131,7 +132,12 @@ class VerifyPhoneNumber extends GetView<LoginController> {
                                     await controller.onSubmitVerify(pin: pin);
                                 await _db.createUser(
                                   userMap: convertUserToMap(user: _user),
-                                );
+                                ); //Create user by phone login
+
+                                await Get.find<SharedPrefsController>().setUID(
+                                    uid:
+                                        _user!.uid); //Set uid to locale storage
+
                                 await Get.offAllNamed(Routes.HOME);
                                 _phoneLoading.value = false;
                               },
@@ -170,7 +176,7 @@ class VerifyPhoneNumber extends GetView<LoginController> {
                         Obx(
                           () => CustomButton(
                             onPressed: () async {
-                              User? _user;
+                              // User? _user;
                               if (!_phoneLoading.value) {
                                 // _phoneLoading.value = true;
                                 // await controller.onSubmitVerify(
