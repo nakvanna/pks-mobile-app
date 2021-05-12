@@ -99,7 +99,7 @@ class PersonalInfo extends GetView<DbController> {
     }
 
     //Update email equal add more
-    void _updateEmail(List emails) async {
+    void _updateEmail({required List emails}) async {
       if (formKeyEmail.currentState!.validate()) {
         await controller.updateUser(
           docId: kDocID.value,
@@ -107,17 +107,13 @@ class PersonalInfo extends GetView<DbController> {
         ).then((value) {
           if (value) {
             kUserData.value!.email = emails; //Update bio to Global variable
-
-            _emails.value = emails; //Assign after updated
-
-            _emailController.text = ''; //Clear display name field
             formKeyEmail.currentState!.reset();
             Get.snackbar('update'.tr, 'update-successful'.tr);
           } else {
             Get.snackbar(
               'update'.tr,
               'update-unsuccessful'.tr,
-              overlayColor: kInactiveColor,
+              colorText: kInactiveColor,
             );
           }
         });
@@ -132,7 +128,7 @@ class PersonalInfo extends GetView<DbController> {
 
     //Update phone number equal add more
     void _updatePhoneNumbers({required List phoneNumbers}) async {
-      if (formKeyEmail.currentState!.validate()) {
+      if (formKeyPhoneNumber.currentState!.validate()) {
         await controller.updateUser(
           docId: kDocID.value,
           mapData: {'phoneNumber': phoneNumbers},
@@ -146,7 +142,7 @@ class PersonalInfo extends GetView<DbController> {
             Get.snackbar(
               'update'.tr,
               'update-unsuccessful'.tr,
-              overlayColor: kInactiveColor,
+              colorText: kInactiveColor,
             );
           }
         });
@@ -287,28 +283,84 @@ class PersonalInfo extends GetView<DbController> {
                                       ),
                                       children: <Widget>[
                                         for (int i = 0; i < _emails.length; i++)
-                                          ExpansionTile(
-                                            title: Text('nakvanna@gmail.com'),
-                                          ),
-                                        Padding(
-                                          padding: EdgeInsets.all(defaultSize),
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: TextFormField(
-                                                  decoration: InputDecoration(
-                                                    hintText: 'add-more...'.tr,
-                                                    prefixIcon:
-                                                        Icon(Icons.info),
+                                          if (_emails[i]['type'] == 'primary')
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                left: defaultSize,
+                                                right: defaultSize,
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  SimpleText(
+                                                    label: _emails[i]['email'],
+                                                    color: kPrimaryColor,
+                                                  ),
+                                                  SizedBox(
+                                                    width: defaultSize,
+                                                  ),
+                                                  Icon(
+                                                    Icons.verified_outlined,
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          else
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                left: defaultSize,
+                                                right: defaultSize,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  SimpleText(
+                                                    label: _emails[i]['email'],
+                                                    color: kPrimaryColor,
+                                                  ),
+                                                  IconButton(
+                                                    onPressed: () {
+                                                      _emails.removeAt(i);
+                                                      _updateEmail(
+                                                        emails: _emails,
+                                                      );
+                                                    },
+                                                    icon: Icon(
+                                                      Icons.delete_outlined,
+                                                      color: kInactiveColor,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: TextFormField(
+                                                controller: _emailController,
+                                                decoration: InputDecoration(
+                                                  hintText: 'add-more...'.tr,
+                                                  prefixIcon: Icon(
+                                                    Icons.email,
                                                   ),
                                                 ),
                                               ),
-                                              IconButton(
-                                                onPressed: () {},
-                                                icon: Icon(Icons.add),
-                                              ),
-                                            ],
-                                          ),
+                                            ),
+                                            IconButton(
+                                              onPressed: () {
+                                                _emails.add({
+                                                  'email':
+                                                      _emailController.text,
+                                                  'type': 'secondary',
+                                                });
+                                                _emailController.text =
+                                                    ''; //Clear display name field
+                                                _updateEmail(emails: _emails);
+                                              },
+                                              icon: Icon(Icons.add),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),

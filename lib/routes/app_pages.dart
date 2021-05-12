@@ -5,7 +5,7 @@ import 'package:pks_mobile/bindings/translator_binding.dart';
 import 'package:pks_mobile/screens/auth/auth_screen.dart';
 import 'package:pks_mobile/screens/auth/verify_phone_number_screen.dart';
 import 'package:pks_mobile/screens/drawers/settings/language/laguage_screen.dart';
-import 'package:pks_mobile/screens/drawers/settings/personal_info/personal_info_screen.dart';
+import 'package:pks_mobile/screens/drawers/settings/personal_info/view/personal_info_screen.dart';
 import 'package:pks_mobile/screens/drawers/settings/setting_screen.dart';
 import 'package:pks_mobile/screens/home/home_screen.dart';
 import 'package:pks_mobile/screens/splash/splash_screen.dart';
