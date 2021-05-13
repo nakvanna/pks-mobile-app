@@ -6,6 +6,8 @@ import 'package:pks_mobile/modals/user_data.dart';
 final Rx<GoogleSignInAccount?> kGoogleUser =
     Rx<GoogleSignInAccount?>(null); //Store google user
 final RxString kLocaleCode = 'kh_KH'.obs; //Store locale code for translate
-final RxString kUID = ''.obs; //Store UID
-final RxString kDocID = ''.obs; //Store DocID
+final RxString kUID =
+    ''.obs; //Store UID. UID store in locale storage get by in main.dart
+final RxString kDocID = ''
+    .obs; //Store DocID to use in personal info update only assign when call readUser
 Rx<UserData?> kUserData = Rx<UserData?>(null); //Userdata

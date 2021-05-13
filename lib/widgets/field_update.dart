@@ -1,72 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:pks_mobile/constants/app_colors.dart';
-import 'package:pks_mobile/helper/text-styles/simple_text.dart';
-import 'package:pks_mobile/helper/validates/form_validate.dart';
-import 'package:pks_mobile/size_config.dart';
 import 'package:get/get.dart';
 
 class FieldUpdate extends StatelessWidget {
-  FieldUpdate({
+  const FieldUpdate({
     Key? key,
-    required this.fieldController,
+    required this.fromKey,
+    required this.validate,
+    required this.textEditingController,
+    required this.onSave,
+    required this.hintText,
+    required this.preIconData,
     required this.onPressed,
-    this.hintText: 'change-to...',
-    required this.preIcon,
-    required this.sufIcon,
-    required this.valueShow,
-    this.validateLength: 5,
-    this.emptyValueText: 'value-empty',
+    required this.sufIconData,
   }) : super(key: key);
 
-  final TextEditingController fieldController;
+  final GlobalKey<FormState> fromKey;
+  final String? Function(String value) validate;
+  final TextEditingController textEditingController;
+  final Function(String value) onSave;
+  final String hintText;
+  final IconData preIconData;
   final Function onPressed;
-  final String hintText, valueShow, emptyValueText;
-  final IconData preIcon, sufIcon;
-  final int validateLength;
+  final IconData sufIconData;
 
   @override
   Widget build(BuildContext context) {
-    double defaultSize = SizeConfig.defaultSize!;
-    return ExpansionTile(
-      onExpansionChanged: (val) {
-        print(val);
-      },
-      title: valueShow != ''
-          ? SimpleText(
-              label: valueShow,
-              color: kPrimaryColor,
-            )
-          : SimpleText(
-              label: emptyValueText,
-              color: kPrimaryColor,
+    return Form(
+      key: fromKey,
+      child: Row(
+        children: [
+          Expanded(
+            child: TextFormField(
+              validator: ((value) => validate(value!)),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              controller: textEditingController,
+              onSaved: ((value) => onSave(value!)),
+              decoration: InputDecoration(
+                hintText: hintText.tr,
+                prefixIcon: Icon(preIconData),
+              ),
             ),
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.all(defaultSize),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextFormField(
-                  validator: ((value) => kFieldLengthValidate(
-                        length: validateLength,
-                        field: value!,
-                      )),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  controller: fieldController,
-                  decoration: InputDecoration(
-                    hintText: hintText.tr,
-                    prefixIcon: Icon(preIcon),
-                  ),
-                ),
-              ),
-              IconButton(
-                onPressed: () => onPressed(),
-                icon: Icon(sufIcon),
-              ),
-            ],
           ),
-        ),
-      ],
+          IconButton(
+            onPressed: () {
+              onPressed();
+              textEditingController.clear(); //NEED CLEAR
+            },
+            icon: Icon(sufIconData),
+          ),
+        ],
+      ),
     );
   }
 }

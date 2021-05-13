@@ -5,7 +5,7 @@ Map<String, dynamic> convertUserToMap({User? user}) {
   var _user = user!;
   return {
     "displayName": _user.displayName ?? '',
-    "email": _user.email == null
+    "emails": _user.email == null
         ? []
         : [
             {
@@ -17,11 +17,11 @@ Map<String, dynamic> convertUserToMap({User? user}) {
     "isAnonymous": _user.isAnonymous,
     "creationTime": _user.metadata.creationTime,
     "lastSignInTime": _user.metadata.lastSignInTime,
-    "phoneNumber": _user.phoneNumber == null
+    "phoneNumbers": _user.phoneNumber == null
         ? []
         : [
             {
-              'phone': _user.phoneNumber,
+              'phoneNumber': _user.phoneNumber,
               'type': 'primary',
             }
           ],

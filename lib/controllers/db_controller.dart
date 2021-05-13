@@ -32,7 +32,7 @@ class DbController extends GetxController {
     try {
       return _userDataRef.snapshots();
     } catch (e) {
-      print('Read users error on: $e');
+      print('Read users snapshots error on: $e');
     }
   }
 
@@ -52,8 +52,10 @@ class DbController extends GetxController {
     }
   }
 
-  Future<bool> updateUser(
-      {required String docId, required Map<String, Object?> mapData}) async {
+  Future<bool> updateUser({
+    required String docId,
+    required Map<String, Object?> mapData,
+  }) async {
     try {
       await _userDataRef.doc(docId).update(mapData);
       return true;

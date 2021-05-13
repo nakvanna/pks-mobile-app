@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:pks_mobile/constants/app_colors.dart';
 import 'package:pks_mobile/size_config.dart';
 
 class ProfileUpdate extends StatelessWidget {
   const ProfileUpdate({
     Key? key,
-    this.photoURL,
+    required this.photoURL,
     required this.onPressed,
   }) : super(key: key);
 
-  final String? photoURL;
+  final String photoURL;
   final Function onPressed;
 
   @override
@@ -21,12 +22,18 @@ class ProfileUpdate extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(50),
             child: photoURL != ''
-                ? Image.network(
-                    photoURL!,
+                ? Container(
+                    color: kPrimaryColor,
+                    child: Image.network(
+                      photoURL,
+                      width: defaultSize * 10,
+                      height: defaultSize * 10,
+                    ),
                   )
                 : Image.asset(
                     'assets/images/png/profile-placeholder.png',
                     width: defaultSize * 10,
+                    height: defaultSize * 10,
                   ),
           ),
         ),

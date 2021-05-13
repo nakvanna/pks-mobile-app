@@ -79,7 +79,7 @@ class AuthScreen extends GetView<LoginController> {
                       Obx(
                         () => InternationalPhoneNumberInput(
                           onInputChanged: (PhoneNumber number) {
-                            print(number.phoneNumber);
+                            //print(number.phoneNumber);
                           },
                           onInputValidated: (bool value) {
                             isValidate.value = value;
